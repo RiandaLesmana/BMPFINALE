@@ -19,6 +19,15 @@
             @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
+                    <label class="block text-sm font-medium text-white-700">Foto:</label>
+                    @if($item->pas_foto)
+                        <div class="mb-2">
+                            <img src="{{ Storage::url($item->pas_foto) }}" alt="Foto" class="w-32 h-32 object-cover rounded-md">
+                        </div>
+                    @endif
+                    <input type="file" name="pas_foto" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-white-700">ID Pendaftaran:</label>
                     <input type="text" name="id_pendaftaran" value="{{ $item->id_pendaftaran }}" required class="mt-1 p-2 border border-gray-300 rounded-md w-full">
                 </div>
