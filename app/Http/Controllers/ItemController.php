@@ -87,12 +87,19 @@ class ItemController extends Controller
         // Upload file to Supabase Storage
         $response = $storageClient->from($bucketName)->upload($fileName, fopen($filePath, 'r+'), []);
     
-        if ($response['error']) {
-            // Handle error
+        // Check for errors in the response
+        if (isset($response['error']) && $response['error']) {
+            // Handle the error
             throw new \Exception($response['error']['message']);
         }
     
-        $data['pas_foto'] = $response['data']['Key'];
+        // Ensure the data key is available and not empty
+        if (isset($response['data']['Key']) && !empty($response['data']['Key'])) {
+            $data['pas_foto'] = $response['data']['Key'];
+        } else {
+            // If the key is not available, handle the situation
+            throw new \Exception('Failed to upload the file. The returned key is missing.');
+        }
     }
 
     // Store the new item
