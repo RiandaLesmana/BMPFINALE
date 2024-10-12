@@ -81,11 +81,11 @@ class ItemController extends Controller
             $fileName = $file->getClientOriginalName(); // Get the original file name
             
             // Upload the file to Supabase
-            $path = Storage::disk('supabase')->put('testing/' . $fileName, $file);
+            $path = Storage::disk('supabase')->put('testing/' .$file);
             
             if ($path) {
                 // Construct the full URL to access the uploaded file
-                $fullUrl = 'https://iwlxdxsiphucpmcchyke.supabase.co/storage/v1/object/public/uploads/testing/' . $fileName;
+                $fullUrl = 'iwlxdxsiphucpmcchyke.supabase.co/storage/v1/object/public/uploads/testing/' . $fileName;
                 $data['pas_foto'] = $fullUrl;
             } else {
                 \Log::error('File upload failed');
