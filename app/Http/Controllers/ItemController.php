@@ -85,7 +85,7 @@ class ItemController extends Controller
         $storageClient = new StorageClient($supabaseUrl, $supabaseKey);
     
         // Upload file to Supabase Storage
-        $response = $storageClient->from($bucketName)->upload($fileName, fopen($filePath, 'r+'), []);
+        $response = $storageClient->from($bucketName)->upload($fileName, file_get_contents($filePath), []);
     
         // Check for errors in the response
         if (isset($response['error']) && $response['error']) {
@@ -217,7 +217,7 @@ class ItemController extends Controller
             $storageClient = new StorageClient($supabaseUrl, $supabaseKey);
     
             // Upload file to Supabase Storage
-            $response = $storageClient->from($bucketName)->upload($fileName, fopen($filePath, 'r+'), []);
+            $response = $storageClient->from($bucketName)->upload($fileName, file_get_contents($filePath), []);
     
             if ($response['error']) {
                 // Handle error
