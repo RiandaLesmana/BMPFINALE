@@ -75,7 +75,7 @@ class ItemController extends Controller
 
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
-            $path = $file->store('public');
+            $path = Storage::disk('supabase')->put('testing', $file);
             $data['pas_foto'] = $path;
         }
 

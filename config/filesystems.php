@@ -56,6 +56,20 @@ return [
             'throw' => false,
         ],
 
+        'supabase' => [
+        'driver' => 'supabase',
+        'key' => env('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3bHhkeHNpcGh1Y3BtY2NoeWtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg3MTkxNjIsImV4cCI6MjA0NDI5NTE2Mn0.ZCgPi2q1-tZTF6IFZfcPJ_SRVMMh9l77LHUwra0svKE'), // Use a privileged key
+        'bucket' => 'uploads',
+        'endpoint' => env('https://iwlxdxsiphucpmcchyke.supabase.co'),
+        'public' => true,
+        'defaultUrlGeneration' => null,
+        'defaultUrlGenerationOptions' => [
+            'download' => false,
+            'transform' => [],
+        ],
+        'signedUrlExpires' => 60 * 60 * 24, // 1 day
+    ],
+
     ],
 
     /*
