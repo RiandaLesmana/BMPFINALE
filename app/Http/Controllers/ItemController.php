@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
+
 class ItemController extends Controller
 {
     public function __construct()
@@ -184,7 +185,7 @@ class ItemController extends Controller
             }
     
             $file = $request->file('pas_foto');
-            $path = $file->store('public/fotos');
+            $path = $file->store('public/');
             $data['pas_foto'] = $path;
         } else {
             $data['pas_foto'] = $item->pas_foto;
