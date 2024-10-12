@@ -16,9 +16,13 @@ use Illuminate\Support\Facades\Storage;
 */
 Route::get('/test-upload', function () {
     $file = new \Illuminate\Http\File(public_path('test-file.txt'));
+    if (!$file->isReadable()) {
+        dd('File is not readable');
+    }
     $path = Storage::disk('supabase')->put('testing', $file);
     dd($path);
 });
+
 
 Route::get('/', function () {
     return view('welcome');
