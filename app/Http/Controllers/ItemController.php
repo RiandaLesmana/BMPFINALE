@@ -74,36 +74,16 @@ class ItemController extends Controller
         $nextNumber = $latestItem ? (int)substr($latestItem->id_pendaftaran, 4) + 1 : 1;
         $idPendaftaran = 'IPCS' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); 
 
-        use Supabase\Storage\StorageClient;
-
-if ($request->hasFile('pas_foto')) {
-    $file = $request->file('pas_foto');
-    $path = Storage::disk('supabase')->put('testing', $file);
-    
-    if ($path) {
-        \Log::info('File uploaded successfully: ' . $path);
-
-        // Generate a public URL using Supabase SDK
-        $supabaseUrl = env('SUPABASE_URL'); // Your Supabase URL from environment variables
-        $supabaseKey = env('SUPABASE_API_KEY'); // Your Supabase API key from environment variables
-        
-        $storage = new StorageClient($supabaseUrl, $supabaseKey);
-        $bucketName = 'public-bucket'; // Your Supabase bucket name
-        $response = $storage->from($bucketName)->getPublicUrl($path);
-
-        // Check if the response contains the public URL
-        if (isset($response['publicURL'])) {
-            $publicUrl = $response['publicURL'];
-            \Log::info('Public URL: ' . $publicUrl);
-            $data['pas_foto'] = $publicUrl;
-        } else {
-            \Log::error('Failed to generate public URL: ' . json_encode($response));
+        if ($request->hasFile('pas_foto')) {
+            $file = $request->file('pas_foto');
+            $path = Storage::disk('supabase')->put('testing', $file);
+            if ($path) {
+                \Log::info('File uploaded successfully: ' . $path);
+            } else {
+                \Log::error('File upload failed');
+            }
+            $data['pas_foto'] = $path;
         }
-    } else {
-        \Log::error('File upload failed');
-    }
-}
-
 
         // Store the new item
         Item::create([
