@@ -87,9 +87,9 @@ class ItemController extends Controller
             $path = 'fotos/' . $file->getClientOriginalName();
 
             // Upload the file to Supabase Storage
-            $this->storage->from(env('SUPABASE_STORAGE_BUCKET'))->upload($path, fopen($file, 'r'), [
+            $this->storage->from(env('SUPABASE_STORAGE_BUCKET'))->upload($path, fopen($file->getRealPath(), 'r'), [
                 'contentType' => $file->getClientMimeType(),
-            ]);
+            ]);            
 
             $data['pas_foto'] = $path; // Save the path to the database
         }
