@@ -14,10 +14,17 @@ use Supabase\Storage\StorageClient;
 
 class ItemController extends Controller
 {
+    protected $storage;
+
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('admin')->except(['index', 'show']);
+
+        $this->storage = new StorageClient([
+            'url' => env('SUPABASE_URL'),
+            'key' => env('SUPABASE_API_KEY'),
+        ]);
     }
 
     public function index()
@@ -75,21 +82,18 @@ class ItemController extends Controller
 
         $supabase = new StorageClient(env('SUPABASE_API_KEY'), env('SUPABASE_URL'));
 
-        $pasFotoPath = null;
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
-            $filePath = 'fotos/' . $file->getClientOriginalName();
-            $bucketName = env('SUPABASE_STORAGE_BUCKET');
 
-            // Upload to Supabase Storage
-            $uploadResponse = $supabase->from($bucketName)->upload($filePath, fopen($file->getRealPath(), 'r'));
+            // Define the file path in the bucket
+            $path = 'fotos/' . $file->getClientOriginalName();
 
-            if ($uploadResponse['error']) {
-                return redirect()->back()->with('error', 'Failed to upload file to Supabase Storage.');
-            }
+            // Upload the file to Supabase Storage
+            $this->storage->from(env('SUPABASE_STORAGE_BUCKET'))->upload($path, fopen($file, 'r'), [
+                'contentType' => $file->getClientMimeType(),
+            ]);
 
-            // Get the public URL for the uploaded file
-            $pasFotoPath = $supabase->from($bucketName)->getPublicUrl($filePath);
+            $data['pas_foto'] = $path; // Save the path to the database
         }
 
         // Store the new item
@@ -100,7 +104,7 @@ class ItemController extends Controller
             'nik' => $request->nik,
             'nama_siswa' => $request->nama_siswa,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'pas_foto' => $pasFotoPath,
+            'pas_foto' => $data['pas_foto'] ?? null,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'agama' => $request->agama,
