@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use Illuminate\Support\Facades\Storage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,11 @@ use App\Http\Controllers\ItemController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/test-upload', function () {
+    $file = new \Illuminate\Http\File(public_path('test-file.txt'));
+    $path = Storage::disk('supabase')->put('testing', $file);
+    dd($path);
+});
 
 Route::get('/', function () {
     return view('welcome');
