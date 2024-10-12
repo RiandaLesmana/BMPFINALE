@@ -21,10 +21,8 @@ class ItemController extends Controller
         $this->middleware('auth');
         $this->middleware('admin')->except(['index', 'show']);
 
-        $this->storage = new StorageClient([
-            'url' => env('SUPABASE_URL'),
-            'key' => env('SUPABASE_API_KEY'),
-        ]);
+        $this->storage = new StorageClient(env('SUPABASE_URL'), env('SUPABASE_API_KEY'));
+
     }
 
     public function index()
