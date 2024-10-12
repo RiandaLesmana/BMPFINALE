@@ -185,7 +185,7 @@ class ItemController extends Controller
             }
     
             $file = $request->file('pas_foto');
-            $path = $file->store('public/images');
+            $path = $file->store('public');
             $data['pas_foto'] = $path;
         } else {
             $data['pas_foto'] = $item->pas_foto;
