@@ -77,12 +77,27 @@ class ItemController extends Controller
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
             $path = Storage::disk('supabase')->put('testing', $file);
+            
             if ($path) {
                 \Log::info('File uploaded successfully: ' . $path);
+        
+                // Generate a public URL using Supabase SDK
+                $supabaseUrl = env('SUPABASE_URL'); // Your Supabase URL from environment variables
+                $supabaseKey = env('SUPABASE_API_KEY'); // Your Supabase API key from environment variables
+                
+                $storage = new StorageClient($supabaseUrl, $supabaseKey);
+                $bucketName = 'public-bucket'; // Your Supabase bucket name
+                $publicUrl = $storage->from($bucketName)->getPublicUrl($path);
+        
+                if ($publicUrl) {
+                    \Log::info('Public URL: ' . $publicUrl['publicURL']);
+                    $data['pas_foto'] = $publicUrl['publicURL'];
+                } else {
+                    \Log::error('Failed to generate public URL');
+                }
             } else {
                 \Log::error('File upload failed');
             }
-            $data['pas_foto'] = $path;
         }
 
         // Store the new item

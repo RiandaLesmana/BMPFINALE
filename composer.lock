@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "054910a3b2c0dd617dcab434508fd027",
+    "content-hash": "ba05686b966d8000ede6df68a2319dd7",
     "packages": [
         {
             "name": "bayfrontmedia/php-mime-types",
