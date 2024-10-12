@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 Route::get('/test-upload', function () {
-    $file = new \Illuminate\Http\File(public_path('test-file.txt'));
+    $file = new \Illuminate\Http\File(public_path('bbb.png'));
     if (!$file->isReadable()) {
         dd('File is not readable');
     }
