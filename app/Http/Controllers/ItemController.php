@@ -143,7 +143,7 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        $jurusan = Jurusan::all();
+        $jurusan = Jurusan::all()->pluck('name', 'id')->toArray();
         return view('items.edit', compact('item', 'jurusan'));
     }
 
