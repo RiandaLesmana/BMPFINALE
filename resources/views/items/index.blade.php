@@ -19,12 +19,10 @@
             </div>
         @endif
 
-        <!-- Add New Student Button (Admin Only) -->
-        @if(Auth::check() && Auth::user()->roles == 'member')  
+        <!-- Add New Student Button (Admin Only) --> 
             <div class="mb-6 flex justify-end">
                 <a href="{{ route('items.create') }}" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg shadow-md">Daftar</a>
             </div>
-        @endif 
 
         <!-- Table -->
         @if(Auth::check() && Auth::user()->roles == 'admin') 
