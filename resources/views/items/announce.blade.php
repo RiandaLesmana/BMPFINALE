@@ -9,7 +9,7 @@
                 <div class="text-center col-span-1">
                     <strong class="block text-gray-600 dark:text-gray-400 mb-2">Foto:</strong>
                     @if($item->pas_foto)
-                        <img src="{{ Storage::url($item->pas_foto) }}" alt="Foto" class="w-32 h-32 object-cover rounded-full mx-auto transition-transform duration-300 hover:scale-110">
+                        <img src="{{ $item->pas_foto }}" alt="Foto" class="w-32 h-32 object-cover rounded-full mx-auto transition-transform duration-300 hover:scale-110">
                     @else
                         <span class="block mt-2 text-gray-600 dark:text-gray-400">N/A</span>
                     @endif

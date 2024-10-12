@@ -9,11 +9,13 @@
         <div class="bg-white dark:bg-gray-800 p-6 shadow-md rounded-lg">
             <h3 class="text-xl font-semibold mb-4  text-gray-800 dark:text-gray-200">Informasi Siswa</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow ">              
-                <div class="text-gray-600 dark:text-gray-400"><strong>Foto:</strong> @if($item->pas_foto)
-                                <img src="{{ Storage::url($item->pas_foto) }}" alt="Foto" class="w-16 h-16 object-cover rounded-full">
-                            @else
-                                N/A
-                            @endif
+                <div class="text-gray-600 dark:text-gray-400">
+                    <strong>Foto:</strong>
+                    @if($item->pas_foto)
+                        <img src="{{ $item->pas_foto }}" alt="Foto" class="w-16 h-16 object-cover rounded-full">
+                    @else
+                        N/A
+                    @endif
                 </div>
                 <div class="text-gray-600 dark:text-gray-400"><strong>ID Pendaftaran:</strong> {{ $item->id_pendaftaran }}</div>
                 <div class="text-gray-600 dark:text-gray-400"><strong>NISN:</strong> {{ $item->nisn }}</div>
