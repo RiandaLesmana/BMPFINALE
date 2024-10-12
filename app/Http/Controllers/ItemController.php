@@ -75,31 +75,8 @@ class ItemController extends Controller
 
     if ($request->hasFile('pas_foto')) {
         $file = $request->file('pas_foto');
-        $filePath = $file->getPathname();
-        $fileName = $file->getClientOriginalName();
-    
-        // Initialize Supabase Storage Client
-        $supabaseUrl = env('SUPABASE_URL');
-        $supabaseKey = env('SUPABASE_KEY');
-        $bucketName = env('SUPABASE_BUCKET');
-        $storageClient = new StorageClient($supabaseUrl, $supabaseKey);
-    
-        // Upload file to Supabase Storage
-        $response = $storageClient->from($bucketName)->upload($fileName, file_get_contents($filePath), []);
-    
-        // Check for errors in the response
-        if (isset($response['error']) && $response['error']) {
-            // Handle the error
-            throw new \Exception($response['error']['message']);
-        }
-    
-        // Ensure the data key is available and not empty
-        if (isset($response['data']['Key']) && !empty($response['data']['Key'])) {
-            $data['pas_foto'] = $response['data']['Key'];
-        } else {
-            // If the key is not available, handle the situation
-            throw new \Exception('Failed to upload the file. The returned key is missing.');
-        }
+        $path = $file->store('public/fotos');
+        $data['pas_foto'] = $path;
     }
 
     // Store the new item
@@ -203,29 +180,16 @@ class ItemController extends Controller
             'status_pendaftaran' => 'nullable|string|max:255',
         ]);
 
-        $data = $request->all();
-
         if ($request->hasFile('pas_foto')) {
-            $file = $request->file('pas_foto');
-            $filePath = $file->getPathname();
-            $fileName = $file->getClientOriginalName();
-    
-            // Initialize Supabase Storage Client
-            $supabaseUrl = env('SUPABASE_URL');
-            $supabaseKey = env('SUPABASE_KEY');
-            $bucketName = env('SUPABASE_BUCKET');
-            $storageClient = new StorageClient($supabaseUrl, $supabaseKey);
-    
-            // Upload file to Supabase Storage
-            $response = $storageClient->from($bucketName)->upload($fileName, file_get_contents($filePath), []);
-    
-            if ($response['error']) {
-                // Handle error
-                throw new \Exception($response['error']['message']);
+            if ($item->pas_foto) {
+                Storage::delete($item->pas_foto);
             }
     
-            // Update the pas_foto field with the new file path
-            $data['pas_foto'] = $response['data']['Key'];
+            $file = $request->file('pas_foto');
+            $path = $file->store('public');
+            $data['pas_foto'] = $path;
+        } else {
+            $data['pas_foto'] = $item->pas_foto;
         }
 
         $item->update([
