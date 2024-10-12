@@ -14,15 +14,10 @@ use Supabase\Storage\StorageClient;
 
 class ItemController extends Controller
 {
-    protected $storage;
-
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('admin')->except(['index', 'show']);
-
-        $this->storage = new StorageClient(env('SUPABASE_URL'), env('SUPABASE_API_KEY'));
-
     }
 
     public function index()
@@ -78,20 +73,10 @@ class ItemController extends Controller
         $nextNumber = $latestItem ? (int)substr($latestItem->id_pendaftaran, 4) + 1 : 1;
         $idPendaftaran = 'IPCS' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); 
 
-        $supabase = new StorageClient(env('SUPABASE_API_KEY'), env('SUPABASE_URL'));
-
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
-
-            // Define the file path in the bucket
-            $path = 'fotos/' . $file->getClientOriginalName();
-
-            // Upload the file to Supabase Storage
-            $this->storage->from(env('SUPABASE_STORAGE_BUCKET'))->upload($path, fopen($file->getRealPath(), 'r'), [
-                'contentType' => $file->getClientMimeType(),
-            ]);            
-
-            $data['pas_foto'] = $path; // Save the path to the database
+            $path = $file->store('public');
+            $data['pas_foto'] = $path;
         }
 
         // Store the new item
