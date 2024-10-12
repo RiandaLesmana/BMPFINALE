@@ -74,22 +74,15 @@ class ItemController extends Controller
         $nextNumber = $latestItem ? (int)substr($latestItem->id_pendaftaran, 4) + 1 : 1;
         $idPendaftaran = 'IPCS' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); 
 
-        $data = $request->all();
-
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
-            $fileName = $file->getClientOriginalName(); // Get the original file name
-            
-            // Upload the file to Supabase
-            $path = Storage::disk('supabase')->put('testing/' .$file);
-            
+            $path = Storage::disk('supabase')->put('testing', $file);
             if ($path) {
-                // Construct the full URL to access the uploaded file
-                $fullUrl = 'iwlxdxsiphucpmcchyke.supabase.co/storage/v1/object/public/uploads/testing/' . $fileName;
-                $data['pas_foto'] = $fullUrl;
+                \Log::info('File uploaded successfully: ' . $path);
             } else {
                 \Log::error('File upload failed');
             }
+            $data['pas_foto'] = $path;
         }
 
         // Store the new item
