@@ -22,9 +22,9 @@
         }
     ],
     "env": {
-        "APP_NAME": "ppf-cyan",
+        "APP_NAME": "bmpfinale",
         "APP_ENV": "production",
-        "APP_DEBUG": "false",
+        "APP_DEBUG": "true",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
