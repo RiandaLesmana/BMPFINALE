@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use Supabase\Storage\StorageClient;
+use Illuminate\Support\Facades\Log;
 
 
 class ItemController extends Controller
@@ -76,6 +77,11 @@ class ItemController extends Controller
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
             $path = Storage::disk('supabase')->put('testing', $file);
+            if ($path) {
+                \Log::info('File uploaded successfully: ' . $path);
+            } else {
+                \Log::error('File upload failed');
+            }
             $data['pas_foto'] = $path;
         }
 
