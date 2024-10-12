@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Supabase\Storage\StorageClient;
 
 
 class ItemController extends Controller
@@ -74,8 +75,24 @@ class ItemController extends Controller
 
     if ($request->hasFile('pas_foto')) {
         $file = $request->file('pas_foto');
-        $path = $file->store('public/fotos');
-        $data['pas_foto'] = $path;
+        $filePath = $file->getPathname();
+        $fileName = $file->getClientOriginalName();
+    
+        // Initialize Supabase Storage Client
+        $supabaseUrl = env('SUPABASE_URL');
+        $supabaseKey = env('SUPABASE_KEY');
+        $bucketName = env('SUPABASE_BUCKET');
+        $storageClient = new StorageClient($supabaseUrl, $supabaseKey);
+    
+        // Upload file to Supabase Storage
+        $response = $storageClient->from($bucketName)->upload($fileName, fopen($filePath, 'r+'));
+    
+        if ($response['error']) {
+            // Handle error
+            throw new \Exception($response['error']['message']);
+        }
+    
+        $data['pas_foto'] = $response['data']['Key'];
     }
 
     // Store the new item
@@ -179,16 +196,29 @@ class ItemController extends Controller
             'status_pendaftaran' => 'nullable|string|max:255',
         ]);
 
+        $data = $request->all();
+
         if ($request->hasFile('pas_foto')) {
-            if ($item->pas_foto) {
-                Storage::delete($item->pas_foto);
+            $file = $request->file('pas_foto');
+            $filePath = $file->getPathname();
+            $fileName = $file->getClientOriginalName();
+    
+            // Initialize Supabase Storage Client
+            $supabaseUrl = env('SUPABASE_URL');
+            $supabaseKey = env('SUPABASE_KEY');
+            $bucketName = env('SUPABASE_BUCKET');
+            $storageClient = new StorageClient($supabaseUrl, $supabaseKey);
+    
+            // Upload file to Supabase Storage
+            $response = $storageClient->from($bucketName)->upload($fileName, fopen($filePath, 'r+'));
+    
+            if ($response['error']) {
+                // Handle error
+                throw new \Exception($response['error']['message']);
             }
     
-            $file = $request->file('pas_foto');
-            $path = $file->store('public');
-            $data['pas_foto'] = $path;
-        } else {
-            $data['pas_foto'] = $item->pas_foto;
+            // Update the pas_foto field with the new file path
+            $data['pas_foto'] = $response['data']['Key'];
         }
 
         $item->update([
