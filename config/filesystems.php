@@ -57,14 +57,15 @@ return [
         ],
 
         'supabase' => [
-        'driver' => 's3',
-        'key' => env('SUPABASE_KEY'),
-        'secret' => env('SUPABASE_SECRET'),
-        'region' => env('SUPABASE_REGION'),
-        'bucket' => env('SUPABASE_BUCKET'),
-        'url' => env('SUPABASE_URL'),
-        'endpoint' => env('SUPABASE_ENDPOINT'),
-        'use_path_style_endpoint' => true,
+            'driver' => 's3',
+            'key' => env('SUPABASE_KEY'),
+            'secret' => env('SUPABASE_SECRET'),
+            'region' => env('SUPABASE_REGION'),
+            'bucket' => env('SUPABASE_BUCKET'),
+            'url' => env('SUPABASE_URL'),
+            'endpoint' => env('SUPABASE_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
         ],
 
     ],
