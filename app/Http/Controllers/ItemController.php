@@ -83,13 +83,17 @@ class ItemController extends Controller
             $path = 'testing/' . $filename;
 
             try {
-                Storage::disk('supabase')->write($path, $file->get());
+                $stream = fopen($file->getRealPath(), 'r+');
+                Storage::disk('supabase')->writeStream($path, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
                 \Log::info('File uploaded successfully: ' . $path);
                 
                 // Get the public URL for the uploaded file
                 $publicUrl = Storage::disk('supabase')->url($path);
                 $data['pas_foto'] = $publicUrl;
-            } catch (UnableToWriteFile $e) {
+            } catch (\Exception $e) {
                 \Log::error('File upload failed: ' . $e->getMessage());
             }
         }
