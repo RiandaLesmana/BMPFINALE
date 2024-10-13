@@ -13,7 +13,7 @@
                     <strong>Foto:</strong>
                     @if($item->pas_foto)
                         <img src="{{ $item->pas_foto }}" alt="Foto" class="w-16 h-16 object-cover rounded-full">
-                        <p>Debug - Image URL: {{ $item->pas_foto }}</p>
+                        <!-- <p>Debug - Image URL: {{ $item->pas_foto }}</p> -->
                     @else
                         N/A
                     @endif

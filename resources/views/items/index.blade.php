@@ -48,7 +48,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">{{ $item->id_pendaftaran }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($item->pas_foto)
-                                <img src="{{ Storage::url($item->pas_foto) }}" alt="Foto" class="w-16 h-16 object-cover rounded-full">
+                                <img src="{{ $item->pas_foto }}" alt="Foto" class="w-16 h-16 object-cover rounded-full">
                             @else
                                 N/A
                             @endif
