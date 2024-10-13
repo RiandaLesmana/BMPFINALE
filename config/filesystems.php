@@ -69,7 +69,7 @@ return [
         ],
         'signedUrlExpires' => 60 * 60 * 24, // 1 day
         'throw' => true,
-    ],
+        ],
 
     ],
 
