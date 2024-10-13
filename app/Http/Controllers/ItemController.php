@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use Supabase\Storage\StorageClient;
 use Illuminate\Support\Facades\Log;
+use League\Flysystem\UnableToWriteFile;
 
 
 class ItemController extends Controller
@@ -78,14 +79,18 @@ class ItemController extends Controller
 
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
-            $path = Storage::disk('supabase')->put('testing', $file);
-            if ($path) {
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = 'testing/' . $filename;
+
+            try {
+                Storage::disk('supabase')->write($path, $file->get());
                 \Log::info('File uploaded successfully: ' . $path);
+                
                 // Get the public URL for the uploaded file
                 $publicUrl = Storage::disk('supabase')->url($path);
                 $data['pas_foto'] = $publicUrl;
-            } else {
-                \Log::error('File upload failed');
+            } catch (UnableToWriteFile $e) {
+                \Log::error('File upload failed: ' . $e->getMessage());
             }
         }
 
