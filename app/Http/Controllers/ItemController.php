@@ -74,15 +74,19 @@ class ItemController extends Controller
         $nextNumber = $latestItem ? (int)substr($latestItem->id_pendaftaran, 4) + 1 : 1;
         $idPendaftaran = 'IPCS' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT); 
 
+        $data = [];
+
         if ($request->hasFile('pas_foto')) {
             $file = $request->file('pas_foto');
             $path = Storage::disk('supabase')->put('testing', $file);
             if ($path) {
                 \Log::info('File uploaded successfully: ' . $path);
+                // Get the public URL for the uploaded file
+                $publicUrl = Storage::disk('supabase')->url($path);
+                $data['pas_foto'] = $publicUrl;
             } else {
                 \Log::error('File upload failed');
             }
-            $data['pas_foto'] = $path;
         }
         
 
