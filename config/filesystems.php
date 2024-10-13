@@ -57,15 +57,18 @@ return [
         ],
 
         'supabase' => [
-            'driver' => 's3',
-            'key' => env('SUPABASE_KEY'),
-            'secret' => env('SUPABASE_SECRET'),
-            'region' => env('SUPABASE_REGION'),
-            'bucket' => env('SUPABASE_BUCKET'),
-            'url' => env('SUPABASE_URL'),
-            'endpoint' => env('SUPABASE_ENDPOINT'),
-            'use_path_style_endpoint' => true,
-            'throw' => false,
+        'driver' => 'supabase',
+        'key' => env('SUPABASE_ANON_KEY'),
+        'bucket' => 'uploads',
+        'endpoint' => env('SUPABASE_PROJECT_URL'),
+        'public' => true,
+        'defaultUrlGeneration' => null,
+        'defaultUrlGenerationOptions' => [
+            'download' => false,
+            'transform' => [],
+        ],
+        'signedUrlExpires' => 60 * 60 * 24, 
+        'throw' => true,
         ],
 
     ],
